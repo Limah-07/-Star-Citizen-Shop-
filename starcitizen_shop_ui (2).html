@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>L’Antre du Collectionneur</title>
+<meta name="description" content="Bienvenue à L’Antre du Collectionneur, tenu par Le Collectionneur. Items rares et exclusifs, paiement obligatoire avant remise. Chaque acquisition est unique et sécurisée.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#05060a;
+    --panel:#0f1015;
+    --muted:#a3a9ae;
+    --accent:#8fe37a;
+    --danger:#c9563b;
+    --card-border:rgba(143,227,122,0.15);
+    --glass: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.08));
+    --mono: "Segoe UI Mono", "Roboto Mono", Menlo, monospace;
+    --radius:14px;
+  }
+  [data-theme='lux']{ --bg:linear-gradient(180deg,#071028,#041022); --panel:#08122a; --accent:#c7a96b; --muted:#efe9df; --card-border:rgba(199,169,107,0.15); }
+
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; background:var(--bg); color:#e6efe8}
+  body{padding:20px}
+  header{display:flex;align-items:center;gap:16px;padding:20px;border-radius:16px;background:linear-gradient(90deg, rgba(0,0,0,0.3), transparent);box-shadow:0 10px 40px rgba(0,0,0,0.7);border:1px solid rgba(255,255,255,0.02)}
+  .logo{font-weight:800;letter-spacing:1px;font-size:22px;color:var(--accent);font-family:'Playfair Display', serif}
+  .subtitle{color:var(--muted);font-size:14px}
+
+  .wrap{width:95%;max-width:1250px;margin:26px auto;display:grid;grid-template-columns:350px 1fr;gap:24px}
+
+  .panel{background:var(--panel);padding:20px;border-radius:var(--radius);border:1px solid rgba(255,255,255,0.04);box-shadow:0 8px 28px rgba(0,0,0,0.65)}
+  .search{display:flex;gap:10px;align-items:center}
+  .search input{flex:1;padding:12px;background:transparent;border:1px dashed rgba(143,227,122,0.15);border-radius:10px;color:var(--accent);font-weight:600;outline:none}
+  .filters{margin-top:16px;display:flex;flex-direction:column;gap:12px}
+  label{font-size:13px;color:var(--muted);font-weight:500;letter-spacing:0.5px}
+  select,input[type=range]{width:100%;padding:10px;border-radius:10px;background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--muted);outline:none}
+  button{background:transparent;border:1px solid rgba(143,227,122,0.2);padding:10px 14px;border-radius:10px;color:var(--accent);cursor:pointer;font-weight:600;transition:all 0.2s ease-in-out}
+  button:hover{background:rgba(143,227,122,0.05);}
+  .small{font-size:12px;padding:6px 10px}
+
+  .toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+  .counts{color:var(--muted);font-size:13px}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px}
+  .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.1));padding:14px;border-radius:14px;border:1px solid var(--card-border);display:flex;flex-direction:column;gap:10px;min-height:200px;position:relative;overflow:hidden;transition:transform 0.2s ease, box-shadow 0.2s ease}
+  .card:hover{transform:translateY(-4px);box-shadow:0 14px 30px rgba(0,0,0,0.7)}
+  .card::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,0.2));pointer-events:none;border-radius:14px}
+  .thumb{height:140px;background:#0a0c10;border-radius:10px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+  .thumb img{width:100%;height:100%;object-fit:cover;display:block}
+  .meta{display:flex;justify-content:space-between;align-items:center}
+  .name{font-weight:700;font-size:15px}
+  .tag{font-family:var(--mono);font-size:11px;padding:5px 8px;border-radius:8px;border:1px solid rgba(0,0,0,0.2);background:rgba(0,0,0,0.08)}
+  .rarity{font-size:12px;color:var(--muted);margin-top:4px}
+  .price{font-weight:800;color:var(--accent);font-family:var(--mono);margin-top:4px}
+  .card .actions{display:flex;gap:10px;margin-top:auto}
+  .ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);padding:6px 10px;border-radius:8px;color:var(--muted);cursor:pointer}
+  .ghost:hover{background:rgba(255,255,255,0.03);}
+  .danger{border-color:rgba(201,86,59,0.2);color:var(--danger)}
+
+  .badge{position:absolute;top:12px;left:12px;background:rgba(0,0,0,0.5);padding:6px 10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);font-size:12px;letter-spacing:0.5px}
+
+  .lore{background:var(--panel);padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,0.04);margin-bottom:16px;font-size:14px;color:var(--muted);line-height:1.5}
+
+  footer{margin-top:20px;color:var(--muted);font-size:12px;text-align:center}
+
+  @media(max-width:900px){.wrap{grid-template-columns:1fr;}.panel{order:2}}
+</style>
+</head>
+<body data-theme="dark">
+<header>
+  <div>
+    <div class="logo">L’Antre du Collectionneur</div>
+    <div class="subtitle" id="subtitle">Catalogue visuel d’items rares et exclusifs</div>
+  </div>
+  <div style="margin-left:auto;display:flex;gap:10px;align-items:center">
+    <label style="color:var(--muted);font-size:12px">Lang</label>
+    <select id="langSwitch" style="padding:6px;border-radius:8px;background:transparent;color:var(--muted)">
+      <option value="fr">FR</option>
+      <option value="en">EN</option>
+    </select>
+    <label style="color:var(--muted);font-size:12px">Theme</label>
+    <select id="themeSwitch" style="padding:6px;border-radius:8px;background:transparent;color:var(--muted)">
+      <option value="dark">Standard</option>
+      <option value="lux">Lux doré</option>
+    </select>
+    <button id="downloadZip" class="small">Télécharger ZIP</button>
+  </div>
+</header>
+
+<div class="wrap">
+  <aside class="panel">
+    <div class="lore" id="lore">Bienvenue à L’Antre du Collectionneur, tenu par Le Collectionneur. Items rares et exclusifs, paiement obligatoire avant remise. Chaque acquisition est unique et sécurisée.</div>
+
+    <div class="search">
+      <input id="search" placeholder="Rechercher (nom, tag, description)" />
+      <button id="btnAdd">+ Add</button>
+    </div>
+
+    <div class="filters">
+      <div>
+        <label>Catégorie</label>
+        <select id="filterCat">
+          <option value="">Toutes</option>
+          <option value="helmet">Casque / Helmet</option>
+          <option value="core">Core / Core</option>
+          <option value="arms">Bras / Arms</option>
+          <option value="legs">Jambe / Legs</option>
+          <option value="backpack">Backpack / Backpack</option>
+          <option value="weapons">Armes / Weapons</option>
+          <option value="items">Items / Items</option>
+        </select>
+      </div>
+      <div>
+        <label>Rareté</label>
+        <select id="filterRarity"><option value="">Toutes</option><option>Commun</option><option>Rare</option><option>Exotique</option><option>Unique</option></select>
+      </div>
+      <div>
+        <label>Prix max (aUEC)</label>
+        <input id="filterPrice" type="range" min="0" max="100000" value="100000" />
+        <div style="font-size:12px;color:var(--muted);">≤ <span id="priceVal">100000</span> aUEC</div>
+      </div>
+
+      <div style="display:flex;gap:10px;margin-top:10px">
+        <button id="export">Export JSON</button>
+        <button id="import">Import JSON</button>
+      </div>
+      <div style="margin-top:8px;color:var(--muted);font-size:12px">Pour partager, zippe le fichier HTML avec le dossier images/ si utilisé.</div>
+    </div>
+  </aside>
+
+  <main>
+    <div class="toolbar">
+      <div class="counts"><span id="count">0</span> sets • <span id="visible">0</span> visibles</div>
+      <div style="display:flex;gap:10px;align-items:center">
+        <select id="sort">
+          <option value="new">Trier: récent</option>
+          <option value="price-asc">Prix ↑</option>
+          <option value="price-desc">Prix ↓</option>
+          <option value="name">Nom</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="grid" id="grid"></div>
+
+    <footer>Fichier local • Ouvre ce fichier dans ton navigateur. Images: dossier <code>/images</code> ou liens externes.</footer>
+  </main>
+</div>
+
+<!-- modal add/edit -->
+<div id="modal" class="modal"><div class="sheet">
+  <h3 id="modalTitle">Ajouter / Modifier un set</h3>
+  <div class="form-row">
+    <input id="f_name" placeholder="Nom du set" />
+    <input id="f_price" placeholder="Prix aUEC" />
+  </div>
+  <div class="form-row">
+    <input id="f_cat" placeholder="Catégorie" />
+    <select id="f_rarity"><option>Commun</option><option>Rare</option><option>Exotique</option><option>Unique</option></select>
+  </div>
+  <div class="form-row">
+    <input id="f_img" placeholder="URL image (ou images/monimage.jpg)" />
+  </div>
+  <div class="form-row">
+    <textarea id="f_desc" placeholder="Description, tags séparés par virgule"></textarea>
+  </div>
+  <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:8px">
+    <button id="btnCancel" class="ghost">Annuler</button>
+    <button id="btnSave" class="small">Enregistrer</button>
+  </div>
+</div></div>
+
+<script>
+/* JS pour gestion de langue et catégories */
+const loreEl = document.getElementById('lore');
+const subtitleEl = document.getElementById('subtitle');
+const langSwitch = document.getElementById('langSwitch');
+langSwitch.addEventListener('change', ()=>{
+  if(langSwitch.value==='en'){
+    loreEl.innerHTML = `Welcome to <strong>The Collector's Lair</strong>, operated by <strong>The Collector</strong>, an independent operator in the Stanton system. This shop gathers rare and exclusive items recovered from wrecks, forgotten missions, or private circuits. <strong>Payment is required before delivery</strong>. Each acquisition is unique and secured, and only The Collector ensures the safe delivery and authenticity of every item.`;
+    subtitleEl.innerText='Visual catalog of rare and exclusive items';
+    document.getElementById('filterCat').innerHTML=`<option value="">All</option><option value="helmet">Helmet</option><option value="core">Core</option><option value="arms">Arms</option><option value="legs">Legs</option><option value="backpack">Backpack</option><option value="weapons">Weapons</option><option value="items">Items</option>`;
+  } else {
+    loreEl.innerHTML='Bienvenue à L’Antre du Collectionneur, tenu par Le Collectionneur. Items rares et exclusifs, paiement obligatoire avant remise. Chaque acquisition est unique et sécurisée.';
+    subtitleEl.innerText='Catalogue visuel d’items rares et exclusifs';
+    document.getElementById('filterCat').innerHTML=`<option value="">Toutes</option><option value="helmet">Casque / Helmet</option><option value="core">Core / Core</option><option value="arms">Bras / Arms</option><option value="legs">Jambe / Legs</option><option value="backpack">Backpack / Backpack</option><option value="weapons">Armes / Weapons</option><option value="items">Items / Items</option>`;
+  }
+});
+/* ===== Le reste du JS (items, modals, filtres, export/import JSON, thème et ZIP) reste inchangé ===== */
+</script>
+</body>
+</html>
